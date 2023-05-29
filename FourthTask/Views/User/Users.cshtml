@@ -1,0 +1,55 @@
+﻿@model List<UserModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div>
+    <h1>All Users</h1>
+    <form asp-controller="User" asp-action="UpdateStatus" method="post">
+        <input type="button" class="btn btn-primary" value="Check all status checkboxes" onclick="checkforStatus();">
+        <input type="button" class="btn btn-primary" value="Check all for delete" onclick="checkforDelete();">
+        <input type="button" class="btn btn-primary" value="Uncheck All" onclick="uncheck();">
+    <table >
+        <tr>
+            <th>Block</th>
+            <th>Remove</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>StatusName</th>
+            <th>LastLoginDate</th>
+            <th>RegistrationDate</th>
+        </tr>
+             
+                @for(int i=0;i<Model.Count;i++){   
+
+                    <input type="hidden" asp-for="@Model[i].Id">
+                    <input type="hidden" asp-for="@Model[i].Name">
+                    <input type="hidden" asp-for="@Model[i].Email">
+                    <input type="hidden" asp-for="@Model[i].StatusName">
+                    <input type="hidden" asp-for="@Model[i].LastLoginDate">
+                    <input type="hidden" asp-for="@Model[i].RegistrationDate">
+
+                <tr>
+                    <td><input class = "status" type="checkbox" asp-for="@Model[i].IsBlocked"></td>
+                    <td><input class ="statusForDelete" type="checkbox" asp-for="@Model[i].IsDeleted"></td>
+                    <td><label asp-for="@Model[i].Id">@Model[i].Id</label></td>
+                    <td><label asp-for="@Model[i].Name">@Model[i].Name</label></td>
+                    <td><label asp-for="@Model[i].Email">@Model[i].Email</label></td>
+                    <td><label asp-for="@Model[i].StatusName">@Model[i].StatusName</label></td>
+                    <td><label asp-for="@Model[i].Email">@Model[i].LastLoginDate</label></td>
+                    <td><label asp-for="@Model[i].StatusName">@Model[i].RegistrationDate</label></td>
+                </tr> } 
+    </table>
+        <input type="submit" class="btn btn-primary" value="Send">
+    </form>
+     
+
+    @section Scripts
+        {
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/CheckUncheck.js" asp-append-version="true"></script>
+    }
+
+</div>
