@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using FourthTask.Core.DataTransferObjects;
-using AutoMapper; 
+using AutoMapper;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FourthTask.Controllers
 {
@@ -186,6 +187,11 @@ namespace FourthTask.Controllers
                     var statusId = await statusService.GetStatusByName(newStatusName);
                     n.StatusId = statusId;
 
+                    if (userEmail == n.Email)
+                    { 
+                       if(n.IsBlocked)
+                            await HttpContext.SignOutAsync();
+                    }
 
                     if (n.IsDeleted == true)
                     {
