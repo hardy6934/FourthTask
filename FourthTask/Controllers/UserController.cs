@@ -162,9 +162,7 @@ namespace FourthTask.Controllers
             {
                 var users = await userService.GetAllUsersWithIncluds();
                 var userModels = mapper.Map<List<UserModel>>(users).ToList();
-                foreach (var n in userModels)
-                    if (n.StatusName == "Blocked")
-                        n.IsBlocked = true;
+                
 
                 return View(userModels);
             }
@@ -173,38 +171,60 @@ namespace FourthTask.Controllers
             return View("Authentication");
         }
 
-         
+
         [HttpPost]
-        public async Task<IActionResult> UpdateStatus(List<UserModel> users)
-        { 
+        public async Task<IActionResult> UpdateStatus(List<UserModel> users, string action)
+        {
+            List<UserModel> usersForAction;
+
             var userEmail = User.Identity?.Name;
             var currentUser = await userService.GetUserByEmailAsync(userEmail);
             if (currentUser != null && await statusService.GetStatusByName("Active") == currentUser.StatusId)
             {
-                foreach (var n in users)
-                {
-                    var newStatusName = n.IsBlocked == true ? "Blocked" : "Active";
-                    var statusId = await statusService.GetStatusByName(newStatusName);
-                    n.StatusId = statusId;
 
-                    if (userEmail == n.Email)
-                    { 
-                       if(n.IsBlocked)
-                            await HttpContext.SignOutAsync();
+                if (action == "lock") {
+                    var statusid = await statusService.GetStatusByName("Blocked");
+                    usersForAction = users.Where(x => x.IsChosen == true).Select(x => x).ToList();
+                    foreach (var n in usersForAction)
+                    n.StatusId = statusid;
+                     
+                    await userService.UpdateUserRangeAsync(usersForAction.Select(x => mapper.Map<UserDTO>(x)).ToList());
+                     
+                    if (usersForAction.FirstOrDefault(x => x.Email.Equals(userEmail)) != null)
+                    {
+                        await HttpContext.SignOutAsync();
+                        return View("Authentication");
                     }
 
-                    if (n.IsDeleted == true)
-                    {
-                        await userService.RemoveUserAsync(mapper.Map<UserDTO>(n)); 
+                } else if (action == "unlock")
+                {
+                    var statusid = await statusService.GetStatusByName("Active");
+                    usersForAction = users.Where(x => x.IsChosen == true).Select(x => x).ToList();
+                    foreach (var n in usersForAction)
+                    n.StatusId = statusid;
 
+                    await userService.UpdateUserRangeAsync(usersForAction.Select(x => mapper.Map<UserDTO>(x)).ToList());
+                }
+                else if (action == "delete")
+                { 
+                    usersForAction = users.Where(x => x.IsChosen == true).Select(x =>x).ToList(); 
+                    await userService.RemoveRangeUserAsync(usersForAction.Select(x=> mapper.Map<UserDTO>(x)).ToList());
+
+                    if (usersForAction.FirstOrDefault(x=>x.Email.Equals(userEmail))!=null)
+                    { 
+                        await HttpContext.SignOutAsync();
+                        return View("Authentication");
                     }
                 }
 
-                await userService.UpdateUserRangeAsync(users.Where(x=>x.IsDeleted==false).Select(x => mapper.Map<UserDTO>(x)).ToList());
-                return RedirectToAction("Index", "Home");
+
             }
-            await HttpContext.SignOutAsync();
-            return View("Authentication");
+        
+                
+            return RedirectToAction("Index", "Home");
+            
+            //await HttpContext.SignOutAsync();
+            //return View("Authentication");
             } 
 
         } 

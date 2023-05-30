@@ -13,6 +13,7 @@ namespace FourthTask.Core.Abstractions
         Task EditUsersLastLoginDateAsync(UserDTO dto);
         Task<bool> CheckUserStatus(UserDTO dto);
         Task RemoveUserAsync(UserDTO dto);
+        Task RemoveRangeUserAsync(List<UserDTO> dtos);
 
         Task<bool> IsUserExistAsync(UserDTO dto);
 

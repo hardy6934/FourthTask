@@ -15,7 +15,6 @@ namespace FourthTask.Models
         public int StatusId { get; set; }
         public string StatusName { get; set; }
          
-        public bool IsBlocked { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsChosen { get; set; } 
     }
 }

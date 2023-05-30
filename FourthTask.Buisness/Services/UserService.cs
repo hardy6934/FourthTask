@@ -155,6 +155,19 @@ namespace FourthTask.Buisness.Services
             }
         }
 
+        public async Task RemoveRangeUserAsync(List<UserDTO> dtos)
+        {
+            try
+            {
+                unitOfWork.Users.RemoveRange(dtos.Select(x=>mapper.Map<User>(x)).ToList());
+                await unitOfWork.Commit();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         public async Task<bool> CheckUserPassword(UserDTO dto)
         {

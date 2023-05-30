@@ -6,14 +6,24 @@
 
 <div>
     <h1>All Users</h1>
-    <form asp-controller="User" asp-action="UpdateStatus" method="post">
-        <input type="button" class="btn btn-primary" value="Check all status checkboxes" onclick="checkforStatus();">
-        <input type="button" class="btn btn-primary" value="Check all for delete" onclick="checkforDelete();">
-        <input type="button" class="btn btn-primary" value="Uncheck All" onclick="uncheck();">
+    <form asp-controller="User" asp-action="UpdateStatus" method="post"> 
+       
+         
+        <button type="submit" name="action" value="lock"> 
+            <img src="~/Security-Safe-Lock-PNG.png" style="width:50px; height:50px; ">
+            
+        </button>
+
+        <button type="submit" name="action" value="unlock"> 
+            <img src="~/kisspng-computer-icons-lock-unlock-font-lock-5ac026af46ed84.1408508615225422552905.jpg" style="width:50px; height:50px; ">
+        </button>
+
+        <button type="submit" name="action" value="delete"> 
+            <img src="~/delete.png" style="width:50px; height:50px;  " >
+        </button>
     <table >
         <tr>
-            <th>Block</th>
-            <th>Remove</th>
+            <th><input id="myCheckbox" type="checkbox" onclick="CheckingForStatus();"/>Choose</th> 
             <th>Id</th>
             <th>Name</th>
             <th>Email</th>
@@ -32,8 +42,7 @@
                     <input type="hidden" asp-for="@Model[i].RegistrationDate">
 
                 <tr>
-                    <td><input class = "status" type="checkbox" asp-for="@Model[i].IsBlocked"></td>
-                    <td><input class ="statusForDelete" type="checkbox" asp-for="@Model[i].IsDeleted"></td>
+                    <td><input class = "status" type="checkbox" asp-for="@Model[i].IsChosen"></td>
                     <td><label asp-for="@Model[i].Id">@Model[i].Id</label></td>
                     <td><label asp-for="@Model[i].Name">@Model[i].Name</label></td>
                     <td><label asp-for="@Model[i].Email">@Model[i].Email</label></td>
@@ -42,7 +51,7 @@
                     <td><label asp-for="@Model[i].StatusName">@Model[i].RegistrationDate</label></td>
                 </tr> } 
     </table>
-        <input type="submit" class="btn btn-primary" value="Send">
+        
     </form>
      
 
