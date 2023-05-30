@@ -83,8 +83,18 @@ namespace FourthTask.Controllers
             }
             else
             {
-                ViewData["ErrorMessage"] = "You have been blocked or enter an incorrect password";
-                return View(model); 
+                if (IsActive)
+                {
+                    ViewData["ErrorMessage"] = "Entered an incorrect password";
+                    return View(model);
+                }
+                else
+                {
+                    ViewData["ErrorMessage"] = "You have been blocked";
+                    return View(model);
+                }
+               
+               
             } 
         }
 
