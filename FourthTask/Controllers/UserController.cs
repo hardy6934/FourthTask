@@ -83,7 +83,8 @@ namespace FourthTask.Controllers
             }
             else
             {
-                return View(model);
+                ViewData["ErrorMessage"] = "You have been blocked or enter an incorrect password";
+                return View(model); 
             } 
         }
 
@@ -219,12 +220,8 @@ namespace FourthTask.Controllers
 
 
             }
-        
-                
             return RedirectToAction("Index", "Home");
             
-            //await HttpContext.SignOutAsync();
-            //return View("Authentication");
             } 
 
         } 

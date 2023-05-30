@@ -7,6 +7,8 @@
 <div>
     <h1>Log in</h1>
 
+   
+
     <form asp-controller="User" asp-action="Authentication" method="post">
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
@@ -20,7 +22,7 @@
             <span asp-validation-for="Password" class="text-danger"></span>
 
         </div>
-
+        <p style="color:red">@ViewData["ErrorMessage"]</p>
         <input type="submit" class="btn btn-primary" value="Submit">
          
     </form>

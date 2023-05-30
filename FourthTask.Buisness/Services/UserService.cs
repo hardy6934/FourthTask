@@ -12,13 +12,14 @@ namespace FourthTask.Buisness.Services
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
-        
+        private readonly IStatusService statusService;
 
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IStatusService statusService)
         {
             this.unitOfWork = unitOfWork;
-            this.mapper = mapper; 
+            this.mapper = mapper;
+            this.statusService = statusService;
         }
 
         public async Task<int> CreateUserAsync(UserDTO dto)
@@ -247,7 +248,7 @@ namespace FourthTask.Buisness.Services
                 throw;
             }
         }
-
+         
 
         private string CreateMd5(string password)
         {
